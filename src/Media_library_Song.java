@@ -1,4 +1,4 @@
-public class Medial_library_Song {
+public class Media_library_Song {
     // ATTRIBUTES - INSTANCE VARIABLES
     // Declaring Instance Variables
     private String title;
@@ -13,7 +13,7 @@ public class Medial_library_Song {
     // Most basic contrctor - simpy carves out space in memeory but does not assing values to instance variables
     // public Song(){}
     // Constructor contain default values
-    public Medial_library_Song(){
+    public Media_library_Song(){
         this.title="";
         this.artist = "";
         this.rating = 0;
