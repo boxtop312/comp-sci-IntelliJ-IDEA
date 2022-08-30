@@ -4,7 +4,7 @@ public class Media_library_Song {
     private String title;
     private String artist;
     private int rating;
-
+    private int price;
 
 
 
@@ -31,9 +31,11 @@ public class Media_library_Song {
     public void setTitle(String str){title = str;}
     public void setArtist(String str){artist = str;}
     public void setRating(int num){rating = num;}
+    public void setPrice(int num){price = num;}
     // Getter Methods
     public String getTitle(){return title;}
     public String getArtist(){return artist;}
     public int getRating(){return rating;}
+    public int getPrice(){return price;}
     public String toString(){return "\nTitle: "+this.getTitle()+"\nArtist: "+this.getArtist()+"\nRating: "+this.getRating();}
 }
