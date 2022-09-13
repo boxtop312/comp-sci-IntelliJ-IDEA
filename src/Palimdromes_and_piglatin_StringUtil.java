@@ -1,6 +1,6 @@
-public class StringUtil{
+public class Palimdromes_and_piglatin_StringUtil {
     public static void sayHello(){
-        StringUtil.sayHello();
+        Palimdromes_and_piglatin_StringUtil.sayHello();
     }
 
     public static String reverse(String phrase){
