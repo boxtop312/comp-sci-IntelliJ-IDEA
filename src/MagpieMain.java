@@ -5,7 +5,7 @@ import java.util.Scanner;
  * @author Laurie White
  * @version April 2012
  */
-public class MagpieMain{
+public class MagpieMain {
 
 	/**
 	MAGPIE RUNNER 2
