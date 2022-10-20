@@ -11,7 +11,7 @@ public class Car_Rental {
         System.out.println("Enter the license plate for the car");
         String plate = myObj.nextLine();  // Read user input
         String plateNum = plate.replaceAll("" + "[A-Za-z]", "");
-        String plateStr = plate.replaceAll("[1234567890]", "");
+        String plateStr = plate.replaceAll("[1234567890 ]", "");
         plateNum = plateNum.replaceAll("[^\\w+]", "");
         plateNum = plateNum.replaceAll(" ", "");
         int plateNumInt = Integer.parseInt(plateNum);
@@ -19,9 +19,11 @@ public class Car_Rental {
         for(int i=0; i<plateStr.length(); i++) {
             int asciiValue = plateStr.charAt(i);
             plateStrInt += asciiValue;
+            System.out.println(asciiValue);
         }
         int plateInt = plateNumInt + plateStrInt;
-        int plateIntByTwentySix = plateInt/26;
+        System.out.println(plateInt);
+        int plateIntByTwentySix = (plateInt%26)+65;
         String plateIntByTwentySixASCII = Character.toString((char)plateIntByTwentySix);
         String newPlate = plateIntByTwentySixASCII + plateInt;
         System.out.println("Make = "+make +"\nModel = "+model+"\n"+plate+ " = "+newPlate);

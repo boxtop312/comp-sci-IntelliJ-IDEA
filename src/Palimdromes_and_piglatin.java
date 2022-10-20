@@ -5,7 +5,7 @@ public class Palimdromes_and_piglatin {
         str1 = str;
         String str2;
         str2 = "";
-        String[] stringArray = str1.split("[^\\w+]");
+        String[] stringArray = str1.toLowerCase().split("[^\\w+]");
 //        System.out.println(Arrays.toString(stringArray));
         for(String word : stringArray){
 //            System.out.println(word);
@@ -136,6 +136,6 @@ public class Palimdromes_and_piglatin {
         return(str1);
     }
     public static void main(String[] args) {
-        System.out.println(shortHand("how are you today, im good just going for a stroll"));
+        System.out.println(pigLatin("hello"));
     }
 }

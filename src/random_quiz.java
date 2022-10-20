@@ -5,10 +5,9 @@ public class random_quiz {
         int rand = 0;
         int count =0;
         while(count<numRounds) {
-            while (true) {
+            do {
                 rand = random.nextInt(99999);
-                if (rand != 0) break;
-            }
+            } while (rand == 0);
             if ((rand + "").indexOf('5') != -1 && count < numRounds) {
                 count++;
                 System.out.println(rand);

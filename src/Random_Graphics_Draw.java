@@ -38,17 +38,8 @@ public class Random_Graphics_Draw extends JPanel{
         Random random = new Random();
         int rand = 0;
         while (true){
-            rand = random.nextInt(580);
-            if(rand > 20) break;
-        }
-        return(rand);
-    }
-    public int generateRandomThreeTenToFiveEighty(){
-        Random random = new Random();
-        int rand = 0;
-        while (true){
-            rand = random.nextInt(580);
-            if(rand > 310) break;
+            rand = random.nextInt(591);
+            if(rand > 1) break;
         }
         return(rand);
     }
@@ -76,7 +67,7 @@ public class Random_Graphics_Draw extends JPanel{
         int y1 = generateRandomFiveEighty();
         int x2 = generateRandomFiveEighty();
         int y2 = generateRandomFiveEighty();
-        while(x1 < 10||x1 >= 290||y1 < 310||y1>=580||x2 < 10||x2 >= 290||y2 < 310||y2>=580){
+        while(x1 < 10||x1 >= 290||y1 < 310||y1>=590||x2 < 10||x2 >= 290||y2 < 310||y2>=590){
             x1 = generateRandomFiveEighty();
             y1 = generateRandomFiveEighty();
             x2 = generateRandomFiveEighty();
@@ -92,7 +83,7 @@ public class Random_Graphics_Draw extends JPanel{
         int x = generateRandomFiveEighty();
         int y = generateRandomFiveEighty();
         int width = 50;
-        while(x < 310||x+width >= 580||y < 10||y+width>=290){
+        while(x < 310||x+width >= 590||y < 10||y+width>=290){
             x = generateRandomFiveEighty();
             y = generateRandomFiveEighty();
         }
