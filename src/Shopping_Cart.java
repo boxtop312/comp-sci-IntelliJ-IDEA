@@ -7,7 +7,7 @@ public class Shopping_Cart{
         boolean shopping = true;
         ShoppingCart cart1 = new ShoppingCart();
         String input = "";
-        while(shopping) {
+        while(shopping){
             Scanner myObj = new Scanner(System.in);
             System.out.println("What would you like to do\nadd item, remove item, or end shopping? ");
             input = myObj.nextLine();
