@@ -1,20 +1,22 @@
 import java.util.Scanner;  // Import the Scanner class
+import java.util.ArrayList; // import the ArrayList class
 public class BandBoosterThing {
     public static void main(String[] args) {
-        BandBooster[] cart = new BandBooster[5];
+        ArrayList<BandBooster> cart = new ArrayList<BandBooster>();
         Scanner myObj = new Scanner(System.in);  // Create a Scanner object
-        for (int ii = 0; ii < cart.length; ii++) {
+        for (int ii = 0; ii < 5; ii++) {
             System.out.println("BandBooster Name: ");
-            cart[ii] = new BandBooster(myObj.nextLine(), 0);
+            cart.add(new BandBooster(myObj.nextLine(), 0));
             System.out.println("");
         }
         for (int i = 0; i < 3; i++) {
-            for(int ii = 0; ii < cart.length; ii++) {
-                System.out.println("Enter the number of boxes sold by " + cart[ii].getName() + " this week: ");
-                cart[ii].updateSales(myObj.nextInt());
+            for(int ii = 0; ii < cart.size(); ii++) {
+                System.out.println("Enter the number of boxes sold by " + cart.get(ii).getName() + " this week: ");
+                cart.get(ii).updateSales(myObj.nextInt());
             }
-            for(int ii=0;ii<cart.length;ii++){
-                System.out.println("Boosters: \n"+cart[ii].toString());
+            System.out.println("Boosters:");
+            for(int ii=0;ii<cart.size();ii++){
+                System.out.println(cart.get(ii).toString());
             }
         }
     }
