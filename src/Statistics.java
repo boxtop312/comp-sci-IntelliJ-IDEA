@@ -17,4 +17,11 @@ class Statistics{
             e.printStackTrace();
         }
     }
+    public static int Average(ArrayList<Integer> numlist){
+        int average = 0;
+        for(int i=0; i<numlist.size(); i++){
+            average += numlist.get(i);
+        }
+        return average/numlist.size();
+    }
 }
