@@ -1,0 +1,14 @@
+3 3
+
+c i t
+a y b
+b a t
+
+7
+bat
+bar
+by
+tab
+tip
+it
+cab
