@@ -131,24 +131,18 @@ class Train{
         startX=X;
         startY=Y;
     }
-    int count = 0;
     ArrayList<RailCar> train = new ArrayList<RailCar>();
     void addCar(String carType, Color bodyColor){
         if(Objects.equals(carType, "Locomotive")){
             train.add(new Locomotive(bodyColor));
-            count++;
         } else if (Objects.equals(carType, "RailCar")) {
             train.add(new RailCar(bodyColor));
-            count++;
         } else if (Objects.equals(carType, "PassengerCar")) {
             train.add(new PassengerCar(bodyColor));
-            count++;
         } else if(Objects.equals(carType, "FreightCar")){
             train.add(new FreightCar(bodyColor));
-            count++;
         } else if (Objects.equals(carType,"Caboose")){
             train.add(new Caboose(bodyColor));
-            count++;
         }
 
     }
@@ -156,19 +150,14 @@ class Train{
     void addCar(int index,String carType, Color bodyColor){
         if(Objects.equals(carType, "Locomotive")){
             train.add(index,new Locomotive(bodyColor));
-            count++;
         } else if (Objects.equals(carType, "RailCar")) {
             train.add(index,new RailCar(bodyColor));
-            count++;
         } else if (Objects.equals(carType, "PassengerCar")) {
             train.add(index,new PassengerCar(bodyColor));
-            count++;
         } else if(Objects.equals(carType, "FreightCar")){
             train.add(index,new FreightCar(bodyColor));
-            count++;
         } else if (Objects.equals(carType,"Caboose")){
             train.add(index,new Caboose(bodyColor));
-            count++;
         }
 
     }
