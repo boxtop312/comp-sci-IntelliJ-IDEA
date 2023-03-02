@@ -1,5 +1,112 @@
 public class PositiveAndNegativeCounts{
+    // Implimentation of a recursive binary search
+    // key = value you are searching for
+    // low and high = start and end index respectively
+    // returns index of key or -1 if key is not found
+    // modify this for your solution
+    public static int binarySearch(int[] sortedArray, int key, int low, int high) {
+        int middle = low + ((high - low) / 2);
 
+        if (high < low) {
+            return -1;
+        }
+
+        if (key == sortedArray[middle]) {
+            return middle;
+        } else if (key < sortedArray[middle]) {
+            return binarySearch(sortedArray, key, low, middle - 1);
+        } else {
+            return binarySearch(sortedArray, key, middle + 1, high);
+        }
+    }
+
+    // impliment your solution here
+    // this code will be called for your tests
+    public static int maximumCount(int[] nums) {
+        int a = binarySearch(nums, 0, 0, nums.length-1);
+        int b = -1;
+        if (a == -1) {
+            b = binarySearch(nums,-1,0,nums.length-1);
+            int c = -1;
+            while (b == -1) {
+                b = binarySearch(nums, c, 0, nums.length-1);
+                c--;
+            }
+            for(int i=b;i<nums.length-1;i++){
+                if(nums[i]>nums[b]){
+                    a=i-1;
+                    break;
+                }
+            }
+        }
+        if(nums[a]==0) {
+            for (int i = a-1; i > 0; i--) {
+                if (nums[i] < nums[a]) {
+                    a = i+1;
+                    break;
+                }
+            }
+        } else {
+            b = binarySearch(nums, -1, 0, nums.length - 1);
+            int c = -1;
+            while (b == -1) {
+                b = binarySearch(nums, c, 0, nums.length - 1);
+                c--;
+            }
+            for (int i = b; i < nums.length - 1; i++) {
+                if (nums[i] > nums[a]) {
+                    a = i;
+                    break;
+                }
+            }
+        }
+        int neg = a;
+        int count=0;
+        for (int i=a;i<nums.length-1;i++) {
+            if(nums[i]==0){
+                count++;
+            }
+        }
+        int pos = nums.length-a-count;
+        System.out.println("negatives: " + neg + " positives: " + pos);
+        return Math.max(neg, pos);
+    }
+
+    public static int maximumCountNaive(int[] nums) {
+        int neg = 0;
+        int pos = 0;
+        for (int num : nums) {
+            if (num < 0)
+                neg++;
+            if (num > 0)
+                pos++;
+        }
+        System.out.println("negatives: " + neg + " positives: " + pos);
+        return Math.max(neg, pos);
+    }
+
+    public static void main(String[] args) {
+        // long lists for visualizing efficiency
+        int[] l1 = Consts2.LONG_ARR1;
+        int[] l2 = Consts2.LONG_ARR2;
+
+        int[] list = { -2, -1, -1, 1, 2, 3 };
+        long startTime;
+        long endTime;
+        double duration;
+
+        startTime = System.nanoTime();
+        int naiveRes = maximumCountNaive(l2);
+        endTime = System.nanoTime();
+        duration = (endTime - startTime) / 1000000.0;
+        System.out.println("naive res: " + naiveRes + " time taken: " + duration + "ms\n");
+
+        startTime = System.nanoTime();
+        int optimizedRes = maximumCount(l2);
+        endTime = System.nanoTime();
+        duration = (endTime - startTime) / 1000000.0;
+        System.out.println("optimized res: " + optimizedRes + " time taken: " + duration + "ms\n");
+    }
 }
 final class Consts2 {
 
