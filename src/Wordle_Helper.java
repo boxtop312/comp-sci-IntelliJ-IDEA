@@ -8,7 +8,56 @@ public class Wordle_Helper {
         test.playGame();
     }
 }
+class QuickSort{
+    static void swap(List<HashMap<String, Integer>> arr, int i, int j){
+        HashMap<String,Integer> temp = arr.get(i);
+        arr.set(i, arr.get(j));
+        arr.set(j, temp);
+    }
+    static int partition(List<HashMap<String,Integer>> arr, int low, int high) {
+        // pivot
+        HashMap<String,Integer> pivot = arr.get(high);
 
+        // Index of smaller element and
+        // indicates the right position
+        // of pivot found so far
+        int i = (low - 1);
+
+        for (int j = low; j <= high - 1; j++) {
+
+            // If current element is smaller
+            // than the pivot
+            if (arr.get(j).get(arr.get(j).keySet().toArray()[0]) < pivot.get(pivot.keySet().toArray()[0])) {
+
+                // Increment index of
+                // smaller element
+                i++;
+                swap(arr, i, j);
+            }
+        }
+        swap(arr, i + 1, high);
+        return (i + 1);
+    }
+    static void quickSort(List<HashMap<String,Integer>> arr, int low, int high) {
+        if (low < high) {
+
+            // pi is partitioning index, arr[p]
+            // is now at right place
+            int pi = partition(arr, low, high);
+
+            // Separately sort elements before
+            // partition and after partition
+            quickSort(arr, low, pi - 1);
+            quickSort(arr, pi + 1, high);
+        }
+    }
+    static void printArray(List<HashMap<String,Integer>> arr, int size)
+    {
+        for (int i = 0; i < size; i++)
+            System.out.print(arr.get(i) + " ");
+        System.out.println();
+    }
+}
 class WordleHelper{
     // Attribute
     private HashMap<String,Integer> wordbank = new HashMap<String,Integer>();
@@ -95,7 +144,6 @@ class WordleHelper{
                 toRemove.put(s,wordbank.get(s));
             }
         }
-
     }
     Map<Character, Integer> frequencyOfLettersInAllWords(){
         int[] thingi = new int[26];
@@ -129,47 +177,49 @@ class WordleHelper{
         return score;
     }
 
-    HashMap<String, Integer> rankWordBank(){
-        System.out.println("first");
+    List<HashMap<String, Integer>> rankWordBank(){
+//        System.out.println("first");
         for (String s:wordbank.keySet()) {
             wordbank.replace(s,scoreWord(s));
         }
         List<HashMap<String, Integer>> map = new ArrayList<HashMap<String, Integer>>();
 //        HashMap<String,Integer>[] map = new HashMap[wordbank.size()+1];
         HashMap<String,Integer> toReturn = new HashMap<>();
-        int count = 0;
-        System.out.println("second");
+//        System.out.println("second");
         for (String s:wordbank.keySet()) {
             HashMap<String,Integer> thing = new HashMap<>();
             thing.put(s,wordbank.get(s));
             map.add(thing);
-            count++;
         }
-        System.out.println("third");
-        for(int i=map.size();i>0;i--){
-            for(int ii=0;ii<i-1;ii++){
-                System.out.println(map.get(ii));
-                System.out.println(map.get(ii).keySet());
-                System.out.println(map.get(ii).get(map.get(ii).keySet()));
-                if(map.get(ii).get(map.get(ii).keySet().toString())>map.get(ii+1).get(map.get(ii+1).keySet().toString())){
-                    HashMap<String,Integer> a= new HashMap<>();
-                    HashMap<String,Integer>b=new HashMap<>();
-                    a.put(map.get(ii).keySet().toString(),map.get(ii).get(map.get(ii).keySet().toString()));
-                    b.put(map.get(ii+1).keySet().toString(),map.get(ii+1).get(map.get(ii+1).keySet().toString()));
-                    map.set(ii,b);
-                    map.set(ii+1,a);
-                }
-            }
-        }
-        System.out.println("fourth");
-        for (HashMap<String,Integer> h:map){
-            toReturn.put(h.keySet().toString(),h.get(h.keySet().toString()));
-        }
-        return toReturn;
+//        System.out.println("third");
+        QuickSort.quickSort(map, 0,map.size()-1);
+
+//        for(int i=map.size();i>0;i--){
+//            for(int ii=0;ii<i-1;ii++){
+////                System.out.println(map.get(ii));
+////                System.out.println(map.get(ii).keySet().toArray()[0]);
+////                System.out.println(map.get(ii).get(map.get(ii).keySet().toArray()[0]));
+//                if(map.get(ii).get(map.get(ii).keySet().toArray()[0])>map.get(ii+1).get(map.get(ii+1).keySet().toArray()[0])){
+//                    HashMap<String,Integer> a= new HashMap<>();
+//                    HashMap<String,Integer>b=new HashMap<>();
+//                    a.put(map.get(ii).keySet().toString(),map.get(ii).get(map.get(ii).keySet().toArray()[0]));
+//                    b.put(map.get(ii+1).keySet().toString(),map.get(ii+1).get(map.get(ii+1).keySet().toArray()[0]));
+//                    map.set(ii,b);
+//                    map.set(ii+1,a);
+//                }
+//            }
+//        }
+
+
+        return map;
     }
     void playGame() {
-        wordbank=rankWordBank();
-        System.out.println("test");
+        for (HashMap<String,Integer> h:rankWordBank()){
+            wordbank.put((String) h.keySet().toArray()[0],h.get(h.keySet().toArray()[0]));
+        }
+//        System.out.println(Arrays.toString(wordbank.keySet().toArray()));
+//        System.out.println(scoreWord((String) wordbank.keySet().toArray()[wordbank.size()-1]));
+//        System.out.println(scoreWord((String) wordbank.keySet().toArray()[wordbank.size()-2]));
         while (wordbank.size() > 0) {
             Scanner myObj = new Scanner(System.in);
             System.out.println("Enter the word you tried: ");
@@ -184,6 +234,7 @@ class WordleHelper{
             boolean dupllicates = false;
             for (int j = 0; j < triedWordC.length; j++) {
                 if(dupllicates){
+//                    System.out.println("Duplicates");
                     break;
                 }
                 for (int k = j+1; k < triedWordC.length; k++) {
@@ -200,6 +251,7 @@ class WordleHelper{
             }
             for (int i=0;i<triedWordC.length;i++) {
                 if(!dupllicates) {
+//                    System.out.println("not Duplicates");
                     if (colorsC[i] == 'b') {
                         wordsNotContainingLetter(triedWordC[i]);
                     } else if (colorsC[i] == 'g') {
