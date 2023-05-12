@@ -128,6 +128,7 @@ class FileSystemTree {
                 if(Cpath.length==1){
                     currentDir=root;
                 } else {
+                    currentDir=root;
                     if(splitPath.length>1){
                         for (int i = 0; i < currentDir.children.size(); i++) {
                             if(Objects.equals(currentDir.children.get(i).name, splitPath[1])){
