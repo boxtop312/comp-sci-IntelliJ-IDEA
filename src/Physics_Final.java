@@ -1,7 +1,12 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.*;
+import java.awt.Graphics2D.*;
 import java.util.*;
 import java.awt.event.*;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.*;
 
 
 public class Physics_Final{
@@ -58,6 +63,15 @@ public class Physics_Final{
         JLabel scaleLabel = new JLabel("px/m");
         scaleLabel.setBounds(105,300,50,20);
         f.add(scaleLabel);
+        JCheckBox airResistance = new JCheckBox("Air resistance");
+        airResistance.setBounds(50,330,200,20);
+        airResistance.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+                airResistance.setSelected(false);
+            }
+        });
+        f.add(airResistance);
 
         JButton start = new JButton("Start Simulation");
         start.setBounds(160+135,50,130,30);
@@ -81,7 +95,7 @@ public class Physics_Final{
 }
 
 class TabbedPane{
-    private ArrayList<MassObject> physicsObjectArrayList = new ArrayList<MassObject>();
+    public ArrayList<MassObject> physicsObjectArrayList = new ArrayList<MassObject>();
 
     public JTabbedPane jTP;
 
@@ -247,13 +261,21 @@ abstract class PhysicsObject{
     protected int StartY;
     protected int xPos;
     protected int yPos;
+    protected Color[] colors = {Color.red, Color.blue, Color.yellow, Color.green, Color.darkGray, Color.BLACK, Color.orange, Color.magenta, Color.CYAN};
+    protected int rand = 0;
+
     public PhysicsObject(String n){
         name = n;
         size = 0;
         StartX = 0;
         StartY = 0;
-        xPos = 0;
-        yPos = 0;
+        xPos = StartX;
+        yPos = StartY;
+        Random random = new Random();
+        while (true){
+            rand = random.nextInt(colors.length);
+            if(rand !=0) break;
+        }
     }
     public String getName() {return name;}
 
@@ -282,14 +304,14 @@ abstract class PhysicsObject{
 
 class MassObject extends PhysicsObject{
     protected int mass;
-    protected int initialForce;
+    protected int initialForce = 0;
+    protected int force = 0;
     protected int forceDirection=0;
-    protected int intialVelocity;
+    protected int intialVelocity = 0;
+    protected int velocity = 0;
     protected int velocityDirection=0;
     protected int direction=0;
-
-
-    protected boolean hasGravity;
+    protected boolean hasGravity = false;
 
     public MassObject(String name){
         super(name);
@@ -303,6 +325,7 @@ class MassObject extends PhysicsObject{
         super(name);
         mass = Mass;
         initialForce = initForce;
+        force = initForce;
         forceDirection = forceDir;
         hasGravity = gravity;
     }
@@ -311,6 +334,7 @@ class MassObject extends PhysicsObject{
         super(name);
         mass = Mass;
         intialVelocity = initVelocity;
+        velocity = initVelocity;
         velocityDirection = velocityDir;
         hasGravity = gravity;
     }
@@ -319,40 +343,39 @@ class MassObject extends PhysicsObject{
         super(name);
         mass = Mass;
         initialForce = initForce;
+        force = initForce;
         forceDirection = forceDir;
         intialVelocity = initVelocity;
+        velocity = initVelocity;
         velocityDirection = velocityDir;
         hasGravity = gravity;
 
     }
 
     public int getMass() {return mass;}
-
     public boolean isHasGravity() {return hasGravity;}
-
     public int getDirection() {return direction;}
-
     public int getForceDirection() {return forceDirection;}
-
     public int getInitialForce() {return initialForce;}
-
     public int getIntialVelocity() {return intialVelocity;}
-
     public int getVelocityDirection() {return velocityDirection;}
-
+    public int getForce(){return force;}
+    public int getVelocity(){return velocity;}
     public void setMass(int mass) {this.mass = mass;}
-
     public void setForceDirection(int forceDirection) {this.forceDirection = forceDirection;}
-
     public void setHasGravity(boolean hasGravity) {this.hasGravity = hasGravity;}
-
     public void setInitialForce(int initialForce) {this.initialForce = initialForce;}
-
     public void setDirection(int direction) {this.direction = direction;}
-
     public void setIntialVelocity(int intialVelocity) {this.intialVelocity = intialVelocity;}
-
     public void setVelocityDirection(int velocityDirection) {this.velocityDirection = velocityDirection;}
+    public void setForce(int f){this.force = f;}
+
+    public void setVelocity(int velocity) {this.velocity = velocity;}
+
+    public void drawObject(Graphics g, int scale){
+        g.setColor(colors[rand]);
+        g.fillOval(xPos,yPos,scale*size,scale*size);
+    }
 }
 
 class DisplayGraphics extends Canvas{
@@ -377,7 +400,77 @@ class DisplayGraphics extends Canvas{
     public void paint(Graphics g) {
         setBackground(Color.WHITE);
 
+        Timer timer = new Timer();
+        TimerTask task = new TimerTask() {
+            boolean ting = false;
+            public void run() {
+                if(ting){
+                    g.setColor(Color.white);
+                    g.fillRect(0, 0, getWidth(), getHeight());
+                }
+                for(int i=0;i<jTP.physicsObjectArrayList.size();i++){
+                    jTP.physicsObjectArrayList.get(i).drawObject(g,scale);
+                    System.out.println("test");
+                }
+                for(int i=0;i<jTP.physicsObjectArrayList.size();i++) {
+                    jTP.physicsObjectArrayList.get(i).setxPos(jTP.physicsObjectArrayList.get(i).getxPos()+getForceX(i)+getVelocityX(i));
+                    jTP.physicsObjectArrayList.get(i).setyPos(jTP.physicsObjectArrayList.get(i).getyPos()+getForceY(i)+getVelocityY(i)+getGravity(i));
+                }
+                ting = true;
+            }
+        };
+
+        timer.scheduleAtFixedRate(task, new Date(System.currentTimeMillis()), (long) 1000.0);
 
     }
 
+    public int getForceX(int index){
+        MassObject MO = jTP.physicsObjectArrayList.get(index);
+        int startX = MO.getxPos();
+        int force = MO.getForce();
+        int forceDirection = MO.getForceDirection();
+        int fX = (int) (force * Math.cos(Math.toRadians(forceDirection)));
+        System.out.println(fX/2);
+        return (fX/2);
+    }
+
+    public int getForceY(int index){
+        MassObject MO = jTP.physicsObjectArrayList.get(index);
+        int startY = MO.getyPos();
+        int force = MO.getForce();
+        int forceDirection = MO.getForceDirection();
+        int fY = (int) (force * Math.sin(Math.toRadians(forceDirection)));
+        System.out.println(fY/2);
+        return (fY/2);
+    }
+    public int getVelocityX(int index){
+        MassObject MO = jTP.physicsObjectArrayList.get(index);
+        int startX = MO.getxPos();
+        int velocity = MO.getVelocity();
+        int velocityDireciton = MO.getVelocityDirection();
+        int vX = (int) (velocity * Math.cos(Math.toRadians(velocityDireciton)));
+        System.out.println(vX);
+        return vX;
+    }
+    public int  getVelocityY(int index){
+        MassObject MO = jTP.physicsObjectArrayList.get(index);
+        int startY = MO.getyPos();
+        int velocity = MO.getVelocity();
+        int velocityDireciton = MO.getVelocityDirection();
+        int vY = (int) (velocity * Math.sin(Math.toRadians(velocityDireciton)));
+        System.out.println(vY);
+        return vY;
+    }
+    public int getGravity(int index){
+        MassObject MO = jTP.physicsObjectArrayList.get(index);
+        int startY = MO.getyPos();
+        if(gravity) {
+            System.out.println(fOfG/2);
+            return (int) (fOfG/2);
+        }else{
+            return 0;
+        }
+    }
+
 }
+
