@@ -401,7 +401,7 @@ class MassObject extends PhysicsObject{
         int mass = this.getMass();
         int forceDirection = this.getForceDirection();
         ySum = ((double) force /mass * Math.sin(Math.toRadians(forceDirection)))/60;
-        return (int) (ySum);
+        return (int) (-ySum);
     }
     public int getVelocityX(){
         int velocity = this.getIntialVelocity();
@@ -413,7 +413,7 @@ class MassObject extends PhysicsObject{
         int startY = this.getyPos();
         int velocity = this.getIntialVelocity();
         int velocityDireciton = this.getVelocityDirection();
-        int vY = (int) (velocity * Math.sin(Math.toRadians(velocityDireciton)));
+        int vY = (int) (-velocity * Math.sin(Math.toRadians(velocityDireciton)));
         return vY/60;
     }
     public int getGravity(double fOfG){
